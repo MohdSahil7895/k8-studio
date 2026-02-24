@@ -1,0 +1,56 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: mohdsahil5622/k8-studio7895:backend
+    container_name: k8-studio-backend
+    restart: unless-stopped
+    environment:
+      API_HOST: 0.0.0.0
+      API_PORT: 7895
+      MOCK_MODE: "false"
+      ALLOWED_ORIGINS: http://localhost,http://127.0.0.1,http://localhost:3453,http://127.0.0.1:3453
+      KUBECONFIG_PATH: /kube/config
+      APP_DATA_DIR: /app/.k8-studio
+      RUNNING_IN_DOCKER: "true"
+      LOCAL_CONTEXT_HOST: host.docker.internal
+      PORT_FORWARD_BIND_ADDRESS: "0.0.0.0"
+      PORT_FORWARD_HOST_PORT_MIN: "11000"
+      PORT_FORWARD_HOST_PORT_MAX: "11099"
+    ports:
+      - "127.0.0.1:11000-11099:11000-11099"
+    expose:
+      - "7895"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ${HOME:-.}/.kube:/kube-home:ro
+      - ${USERPROFILE:-${HOME:-.}}/.kube:/kube-userprofile:ro
+      - ${HOME:-.}/.config/gcloud:/gcloud-home:ro
+      - ${APPDATA:-${USERPROFILE:-${HOME:-.}}/.config}/gcloud:/gcloud-appdata:ro
+      - ${CLOUDSDK_CONFIG:-${APPDATA:-${USERPROFILE:-${HOME:-.}}/.config}/gcloud}:/gcloud-cloudsdk:ro
+      - ${HOME:-.}/.azure:/azure-home:ro
+      - ${USERPROFILE:-${HOME:-.}}/.azure:/azure-userprofile:ro
+      - backend_data:/app/.k8-studio
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_BASE_URL: /api/backend
+        NEXT_PUBLIC_MOCK_MODE: "false"
+        NEXT_PUBLIC_PORT_FORWARD_MIN: "11000"
+        NEXT_PUBLIC_PORT_FORWARD_MAX: "11099"
+    image: mohdsahil5622/k8-studio7895:frontend
+    container_name: k8-studio-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "3453:80"
+    depends_on:
+      - backend
+
+volumes:
+  backend_data:
