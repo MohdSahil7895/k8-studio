@@ -1,9 +1,7 @@
 services:
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
     image: mohdsahil5622/k8-studio7895:backend
+    platform: linux/amd64
     container_name: k8-studio-backend
     restart: unless-stopped
     environment:
@@ -35,15 +33,8 @@ services:
       - backend_data:/app/.k8-studio
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-      args:
-        NEXT_PUBLIC_API_BASE_URL: /api/backend
-        NEXT_PUBLIC_MOCK_MODE: "false"
-        NEXT_PUBLIC_PORT_FORWARD_MIN: "11000"
-        NEXT_PUBLIC_PORT_FORWARD_MAX: "11099"
     image: mohdsahil5622/k8-studio7895:frontend
+    platform: linux/amd64
     container_name: k8-studio-frontend
     restart: unless-stopped
     ports:
