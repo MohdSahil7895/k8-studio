@@ -26,6 +26,8 @@ services:
       - ${HOME:-.}/.kube:/kube-home:ro
       - ${USERPROFILE:-${HOME:-.}}/.kube:/kube-userprofile:ro
       - ${HOME:-.}/.config/gcloud:/gcloud-home:ro
+      - ${HOME:-.}/.minikube:/minikube-home:ro
+      - ${USERPROFILE:-${HOME:-.}}/.minikube:/minikube-userprofile:ro
       - ${APPDATA:-${USERPROFILE:-${HOME:-.}}/.config}/gcloud:/gcloud-appdata:ro
       - ${CLOUDSDK_CONFIG:-${APPDATA:-${USERPROFILE:-${HOME:-.}}/.config}/gcloud}:/gcloud-cloudsdk:ro
       - ${HOME:-.}/.azure:/azure-home:ro

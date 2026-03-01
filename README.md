@@ -7,6 +7,8 @@ This repository is intentionally **deployment-only** and contains only `docker-c
 
 - Multi-context Kubernetes UI
 - Pods, Deployments, StatefulSets, PVCs, Services
+- Pod terminal access
+- Pod files explorer
 - Logs viewer and download
 - Port forwarding from UI
 - Environment variable view/edit workflows
@@ -17,6 +19,7 @@ This repository is intentionally **deployment-only** and contains only `docker-c
 ![K8 Studio settings view](./Screenshot%202026-02-24%20223809.png)
 ![K8 Studio logs view](./Screenshot%202026-02-24%20223830.png)
 ![K8 Studio pods terminal view](./Screenshot%202026-02-24%20223858.png)
+![K8 Studio pod files view](./image.png)
 
 ## Supported Clusters
 
