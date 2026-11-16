@@ -112,3 +112,15 @@ verification remain enabled. Explicit kubeconfig CA settings take precedence.
 
 After host cloud login (for example `gcloud auth login`), use Check in the UI.
 Credential mounts stay live, so restarting Docker is unnecessary.
+
+### Configure inspection CA from the UI
+
+When QA reports a self-signed certificate in its chain, open Settings >
+Connection trust. Obtain the approved public PEM CA bundle from your organization
+administrator, choose that file, and select Save approved CA bundle. Retry Check.
+This works on macOS, Windows, and Linux; the file is validated and stored in
+backend data (the Docker volume), takes effect without restart, and survives
+container recreation. Existing explicit cluster CAs remain authoritative.
+K8_STUDIO_EXTRA_CA_CERTS takes precedence; externally managed bundles must be
+updated at their configured path. Cloud login does not resolve a CA trust error.
+The upload adds trust for the whole backend; use only administrator-approved CAs.
