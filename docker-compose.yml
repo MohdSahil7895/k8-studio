@@ -1,7 +1,7 @@
 services:
   backend:
     image: mohdsahil5622/k8-studio7895:backend
-    platform: linux/amd64
+    pull_policy: always
     container_name: k8-studio-backend
     restart: unless-stopped
     environment:
@@ -23,20 +23,22 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
-      - ${HOME:-.}/.kube:/kube-home:ro
+      - ${HOME:-${USERPROFILE:-.}}/.kube:/kube-home:ro
       - ${USERPROFILE:-${HOME:-.}}/.kube:/kube-userprofile:ro
-      - ${HOME:-.}/.config/gcloud:/gcloud-home:ro
-      - ${HOME:-.}/.minikube:/minikube-home:ro
+      - ${HOME:-${USERPROFILE:-.}}/.minikube:/minikube-home:ro
       - ${USERPROFILE:-${HOME:-.}}/.minikube:/minikube-userprofile:ro
+      - ${HOME:-${USERPROFILE:-.}}/.config/gcloud:/gcloud-home:ro
       - ${APPDATA:-${USERPROFILE:-${HOME:-.}}/.config}/gcloud:/gcloud-appdata:ro
       - ${CLOUDSDK_CONFIG:-${APPDATA:-${USERPROFILE:-${HOME:-.}}/.config}/gcloud}:/gcloud-cloudsdk:ro
-      - ${HOME:-.}/.azure:/azure-home:ro
+      - ${HOME:-${USERPROFILE:-.}}/.azure:/azure-home:ro
       - ${USERPROFILE:-${HOME:-.}}/.azure:/azure-userprofile:ro
+      - ${HOME:-${USERPROFILE:-.}}/.aws:/aws-home:ro
+      - ${USERPROFILE:-${HOME:-.}}/.aws:/aws-userprofile:ro
       - backend_data:/app/.k8-studio
 
   frontend:
     image: mohdsahil5622/k8-studio7895:frontend
-    platform: linux/amd64
+    pull_policy: always
     container_name: k8-studio-frontend
     restart: unless-stopped
     ports:

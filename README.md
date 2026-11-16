@@ -81,3 +81,34 @@ docker compose up -d
   - ensure selected local port is within configured published range and not already in use
 - Cluster auth issues:
   - refresh cloud auth session (`gcloud auth login`, `az login`, etc.)
+
+## Native Mac and Linux images
+
+Both images provide linux/arm64 (Apple Silicon) and linux/amd64 manifests.
+No source directories or local build are required. After updating this repository:
+
+```bash
+git checkout develop
+git pull origin develop
+docker compose up -d
+```
+
+Compose pulls the latest images automatically. Do not add backend/frontend build
+contexts to this distribution repository.
+
+## Optional organization CA
+
+Ask your administrator for the approved CA chain as public PEM certificates.
+Keep this file outside the repository and image. On macOS/Linux:
+
+```bash
+export K8_STUDIO_EXTRA_CA_CERTS_HOST=/absolute/path/to/approved-ca.pem
+docker compose -f docker-compose.yml -f docker-compose.ca.example.yml up -d
+```
+
+On Windows PowerShell, set `$env:K8_STUDIO_EXTRA_CA_CERTS_HOST = 'C:\path\to\approved-ca.pem'`
+then run the same Compose command. The file is mounted read-only; TLS and hostname
+verification remain enabled. Explicit kubeconfig CA settings take precedence.
+
+After host cloud login (for example `gcloud auth login`), use Check in the UI.
+Credential mounts stay live, so restarting Docker is unnecessary.

@@ -1,0 +1,11 @@
+# Optional override. Use with docker-compose.yml only after setting
+# K8_STUDIO_EXTRA_CA_CERTS_HOST to an approved host-side PEM file.
+services:
+  backend:
+    environment:
+      K8_STUDIO_EXTRA_CA_CERTS: /run/k8-studio/extra-ca.pem
+    volumes:
+      - type: bind
+        source: ${K8_STUDIO_EXTRA_CA_CERTS_HOST:?Set K8_STUDIO_EXTRA_CA_CERTS_HOST to an approved PEM file}
+        target: /run/k8-studio/extra-ca.pem
+        read_only: true
